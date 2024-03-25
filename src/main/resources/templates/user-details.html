@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>User details</title>
+</head>
+<body>
+<h2>Детайли за потребителя:</h2>
+<p>
+    <strong>Потребителско име:</strong> <span th:remove="tag" sec:authentication="name"></span>
+</p>
+<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+<div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+<div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
+Authenticated username:
+<div sec:authentication="name"></div>
+Authenticated user's firstName:
+<!--<div sec:authentication="principal.firstName"></div>-->
+</body>
+</html>
