@@ -12,9 +12,11 @@ public class User {
 
     private String username;
 
-    private String password;
+    private String email;
 
-    private String role;
+    private String address;
+
+    private String password;
 
     private boolean enabled;
 
@@ -42,6 +44,22 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -50,11 +68,4 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }
