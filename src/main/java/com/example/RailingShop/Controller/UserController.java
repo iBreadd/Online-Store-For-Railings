@@ -4,7 +4,12 @@ import com.example.RailingShop.DTO.UserLoginDTO;
 import com.example.RailingShop.DTO.UserRegistrationDTO;
 import com.example.RailingShop.Entity.User.User;
 import com.example.RailingShop.Repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -27,6 +33,25 @@ public class UserController {
         model.addAttribute("user", new UserLoginDTO());
         return "login";
     }
+
+
+
+    @GetMapping("/menu")
+    public String showMenu(HttpServletRequest request) {
+
+        System.out.println(request.isUserInRole("ROLE_EMPLOYEE"));
+        System.out.println(request.isUserInRole("EMPLOYEE"));
+        if (request.isUserInRole("ROLE_EMPLOYEE")) {
+
+        }
+
+
+        return "menu";
+    }
+
+
+
+
 
     @GetMapping("/registration")
     public String showRegistrationForm(Model model){
@@ -47,5 +72,15 @@ public class UserController {
 
         return "Успешна регистрация!";
 
+    }
+
+    @GetMapping("/user-details")
+    @PreAuthorize("isAuthenticated()")
+    public String showUserDetails(Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("authentication", authentication);
+
+        return "user-details";
     }
 }

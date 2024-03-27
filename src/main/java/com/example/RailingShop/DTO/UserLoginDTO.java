@@ -2,16 +2,26 @@ package com.example.RailingShop.DTO;
 
 public class UserLoginDTO {
 
-    private String username;
+    private Long id;
 
     private String password;
 
-    public String getUsername() {
-        return username;
+    private String role;
+
+    public String getRole() {
+        return role;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPassword() {
