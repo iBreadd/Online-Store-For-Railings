@@ -1,14 +1,17 @@
 package com.example.RailingShop;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -33,9 +36,25 @@ public class WebSecurityConfig {
                         .requestMatchers("/menu").permitAll()
 
         ).formLogin((form) -> form
-                .loginPage("/login").permitAll())
-
-                .logout((logout) -> logout.permitAll());
+                .loginPage("/login").permitAll()
+                )
+                .logout((logout) -> logout.clearAuthentication(true).logoutUrl("/logout"));
+//                        .addLogoutHandler((request, response, authentication) -> {
+//                            // Изчиства данните за удостоверяване
+////                            SecurityContextHolder.clearContext();
+//
+//                            // Инвалидира HTTP сесията
+////                            request.getSession().invalidate();
+////
+////                            // Изтрива бисквитката за сесията
+////                            Cookie cookie = new Cookie("JSESSIONID", null);
+////                            cookie.setMaxAge(0);
+////                            cookie.setPath("/");
+////                            response.addCookie(cookie);
+//                        })
+//                        .logoutSuccessUrl("/login"))
+//                .csrf((csrf) -> csrf
+//                        .csrfTokenRepository(new CookieCsrfTokenRepository()));
         return http.build();
     }
 }

@@ -4,6 +4,7 @@ import com.example.RailingShop.DTO.UserLoginDTO;
 import com.example.RailingShop.DTO.UserRegistrationDTO;
 import com.example.RailingShop.Entity.User.User;
 import com.example.RailingShop.Repository.UserRepository;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -37,16 +38,23 @@ public class UserController {
 
 
     @GetMapping("/menu")
-    public String showMenu(HttpServletRequest request) {
+    public String showMenu() {
 
-        System.out.println(request.isUserInRole("ROLE_EMPLOYEE"));
-        System.out.println(request.isUserInRole("EMPLOYEE"));
-        if (request.isUserInRole("ROLE_EMPLOYEE")) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
+        if (authentication!=null&&
+                authentication.stream().anyMatch(x-> x.getAuthority().equals("EMPLOYEE"))) {
+            return "menu";
         }
 
 
-        return "menu";
+        return "access-denied";
+    }
+    @PostMapping("/logout")
+    public String customLogut(HttpServletRequest request) throws ServletException
+    {
+        request.logout();
+        return "redirect:/login";
     }
 
 
