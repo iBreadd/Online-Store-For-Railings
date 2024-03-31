@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css">
+</head>
+<body class="bg-dark">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Registration Form</h3>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/shop/register}" th:object="${customer}" method="post">
+                        <div >
+                            <p style="color: red" th:text="${error}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="firstName" placeholder="Enter your first name" th:required="true" th:value="*{firstName}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="lastName" placeholder="Enter your last name" th:required="true" th:value="*{lastName}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" th:required="true" th:value="*{email}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="address" class="form-control" id="address" name="address" placeholder="Enter your address"  th:required="true" th:field="*{address}" >
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"  th:required="true" th:field="*{password}" >
+                            <div th:if="${#fields.hasErrors('password')}"><span th:errors="*{password}" class="text-danger"></span></div>
+
+                        </div>
+                        <button type="submit" class="btn btn-warning mr-2" name="submit">Register</button>
+                        <button type="reset" class="btn btn-secondary" name="reset">Reset</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+</body>
+</html>

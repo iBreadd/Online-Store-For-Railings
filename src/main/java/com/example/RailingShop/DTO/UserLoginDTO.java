@@ -2,9 +2,11 @@ package com.example.RailingShop.DTO;
 
 public class UserLoginDTO {
 
+
     private Long id;
 
     private String password;
+    private String username;
 
     private String role;
 
@@ -30,5 +32,13 @@ public class UserLoginDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

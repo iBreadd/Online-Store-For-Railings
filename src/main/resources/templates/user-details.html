@@ -10,12 +10,15 @@
     <strong>Потребителско име:</strong> <span th:remove="tag" sec:authentication="name"></span>
 </p>
 <div sec:authorize="hasRole('USER')">Text visible to user.</div>
+
 <div sec:authorize="hasRole('EMPLOYEE')">Text visible to admin.</div>
+
 <div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
 Authenticated username:
 <div sec:authentication="name"></div>
 Authenticated user's firstName:
 <!--<div sec:authentication="principal.firstName"></div>-->
+
 
 <form th:action="@{/logout}" method="post">
     <button type="submit">Изход</button>
