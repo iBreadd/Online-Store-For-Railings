@@ -5,7 +5,7 @@
     <title>Registration</title>
 </head>
 <body>
-<h1>Регистрация</h1>
+<h1>Регистрация потребител</h1>
 <form th:action="@{/registration}" method="post">
     <label for="username">Потребителско име:</label>
     <input type="text" id="username" name="username" required>
@@ -16,7 +16,7 @@
     <label for="role">Роля:</label>
     <select id="role" name="role" required>
         <option value="USER">USER</option>
-        <option value="ADMIN">EMPLOYEE</option>
+        <option value="EMPLOYEE">EMPLOYEE</option>
 
     </select>
     <br>

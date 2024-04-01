@@ -18,12 +18,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 
 
 @Controller
-@RequestMapping("/shop")
+//@RequestMapping("/shop")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -33,11 +31,11 @@ public class UserController {
         return new BCryptPasswordEncoder();
     }
 
-    @GetMapping("/login")
-    public String showLogin(Model model){
-        model.addAttribute("user", new UserLoginDTO());
-        return "login";
-    }
+//    @GetMapping("/login")
+//    public String showLogin(Model model){
+//        model.addAttribute("user", new UserLoginDTO());
+//        return "login";
+//    }
 
 
 
@@ -55,15 +53,11 @@ public class UserController {
         return "access-denied";
     }
     @PostMapping("/logout")
-    public String customLogut(HttpServletRequest request) throws ServletException
+    public String customLogout(HttpServletRequest request) throws ServletException
     {
         request.logout();
         return "redirect:/login";
     }
-
-
-
-
 
 //    @GetMapping("/registration")
 //    public String showRegistrationForm(Model model){
@@ -99,22 +93,27 @@ public class UserController {
     @GetMapping("/registration")
     public String showRegistrationForm(Model model){
         model.addAttribute("user", new UserRegistrationDTO());
-        return "shop/registration";
+        return "registration";
     }
 
     @PostMapping("/registration")
-    public String registerUser(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model){
+    public String registerUser(@Valid @ModelAttribute UserRegistrationDTO user, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
-            return "shop/registration";
+            return "registration";
         }
         try {
-            userService.register(user);
+            User temp = new User();
+            temp.setUsername(user.getUsername());
+            temp.setPassword(user.getPassword());
+            temp.setRole(user.getRole());
+            temp.setEnabled(true);
+            userService.register(temp);
         } catch (RuntimeException ex) {
             model.addAttribute("error", ex.getMessage());
-            return "shop/registration";
+            return "registration";
         }
 
-        return "redirect:/shop/login";
+        return "redirect:/login";
 
     }
 }

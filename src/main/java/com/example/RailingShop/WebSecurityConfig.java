@@ -16,13 +16,15 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-
 public class WebSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
         return new UserDetailsServiceImpl();
     }
+
+//    @Bean
+//    public UserDetailsService employeeDetailsService(){return new EmployeeDetailsServiceImpl();}
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -33,7 +35,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         http.authorizeHttpRequests((request)-> request
 
-                .requestMatchers("/registration").permitAll()
+                .requestMatchers("/registration","/register/employee",
+                        "/login/user", "/login/employee","/employee/menu", "/").permitAll()
                         .requestMatchers("/user-details").authenticated()
                         .requestMatchers("/menu").permitAll()
 
@@ -41,22 +44,7 @@ public class WebSecurityConfig {
                 .loginPage("/login").permitAll()
                 )
                 .logout((logout) -> logout.clearAuthentication(true).logoutUrl("/logout"));
-//                        .addLogoutHandler((request, response, authentication) -> {
-//                            // Изчиства данните за удостоверяване
-////                            SecurityContextHolder.clearContext();
-//
-//                            // Инвалидира HTTP сесията
-////                            request.getSession().invalidate();
-////
-////                            // Изтрива бисквитката за сесията
-////                            Cookie cookie = new Cookie("JSESSIONID", null);
-////                            cookie.setMaxAge(0);
-////                            cookie.setPath("/");
-////                            response.addCookie(cookie);
-//                        })
-//                        .logoutSuccessUrl("/login"))
-//                .csrf((csrf) -> csrf
-//                        .csrfTokenRepository(new CookieCsrfTokenRepository()));
+
 
         return http.build();
     }

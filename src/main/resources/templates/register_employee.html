@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration employee</title>
+</head>
+<body>
+<h1>Регистрация служител</h1>
+<form th:action="@{/register/employee}" method="post">
+  <label for="username">Потребителско име:</label>
+  <input type="text" id="username" name="username" required>
+  <br>
+  <label for="password">Парола:</label>
+  <input type="password" id="password" name="password" required>
+  <br>
+  <label for="role">Роля:</label>
+  <select id="role" name="role" required>
+
+    <option value="EMPLOYEE">EMPLOYEE</option>
+
+  </select>
+  <br>
+  <br>
+  <button type="submit">Регистрация</button>
+</form>
+</body>
+</html>
