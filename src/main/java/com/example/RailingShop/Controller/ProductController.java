@@ -15,6 +15,35 @@ import java.util.List;
 public class ProductController {
 
 
+    @PostMapping("/cart/add")
+    public String addProductToCart(@RequestParam Long product_id, @RequestParam Integer quantity, Model model) {
+//        try {
+//            cartService.addProduct(product_id, quantity);
+//        } catch (ProductNotFoundException e) {
+//            model.addAttribute("errorMessage", "Продуктът не е намерен!");
+//            return "product";
+//        } catch (NotEnoughQuantityException e) {
+//            model.addAttribute("errorMessage", "Недостатъчно количество!");
+//            return "product";
+//        }
+
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/products/user/search")
+    public String searchProducts(@RequestParam String searchBy, @RequestParam String searchTerm, Model model) {
+        List<Product> products;
+
+//        if (searchBy.equals("category")) {
+//            products = productService.findByCategory(searchTerm);
+//        } else {
+//            products = productService.findByName(searchTerm);
+//        }
+
+//        model.addAttribute("products", products);
+        return "search";
+    }
+
 
     @GetMapping("/products/search")
     public String searchProducts(@RequestParam String searchBy,

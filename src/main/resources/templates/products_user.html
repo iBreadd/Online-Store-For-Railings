@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Available products</title>
+</head>
+<body>
+<h1>Налични продукти</h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Име</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Категория</th>
+        <th>Изображение</th>
+    </tr>
+    <tr>
+        <td>${product.id}</td>
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+        <td>${product.quantity}</td>
+        <td>${product.category}</td>
+        <td><img src="${product.image}" width="100"></td>
+    </tr>
+</body>
+</html>

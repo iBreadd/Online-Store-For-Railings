@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search products</title>
+</head>
+<body>
+<h1>Търсене на продукти</h1>
+<form action="/products/search" method="get">
+    <label for="search_by">Търсене по:</label>
+    <select id="search_by" name="search_by">
+        <option value="category">Категория</option>
+        <option value="name">Име</option>
+    </select>
+    <input type="text" id="search_term" name="search_term">
+    <button type="submit">Търсене</button>
+</form>
+<br>
+<div id="results">
+    <div th:each="product : ${products}">
+        <h2>[[${product.name}]]</h2>
+        <p>Цена: [[${product.price}]]</p>
+        <p>Категория: [[${product.category}]]</p>
+        <img th:src="${product.image}" width="100">
+    </div>
+</div>
+</body>
+</html>
