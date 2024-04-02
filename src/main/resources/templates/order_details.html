@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order details</title>
+</head>
+<body>
+<h1>Детайли за поръчка ${order.id}</h1>
+<p>Клиент: ${order.client.name}</p>
+<p>Дата: ${order.date}</p>
+<p>Статус: ${order.status}</p>
+<p>Цена: ${order.totalPrice}</p>
+<h2>Продукти:</h2>
+<ul>
+    <li>
+        ${product.name} - ${product.quantity} бр. - ${product.price} лв.
+    </li>
+</ul>
+</body>
+</html>

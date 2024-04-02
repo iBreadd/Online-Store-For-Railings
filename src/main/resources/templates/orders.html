@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List with orders</title>
+</head>
+<body>
+<h1>Списък с поръчки</h1>
+<form action="/orders/filter" method="get">
+    <label for="filter_by_status">Филтриране по статус:</label>
+    <select id="filter_by_status" name="filter_by_status">
+        <option value="">Всички</option>
+        <option value="NEW">Нова</option>
+        <option value="IN_PROGRESS">В обработка</option>
+        <option value="COMPLETED">Изпълнена</option>
+        <option value="CANCELLED">Анулирана</option>
+    </select>
+    <button type="submit">Филтриране</button>
+</form>
+<br>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Клиент</th>
+        <th>Дата</th>
+        <th>Статус</th>
+        <th>Цена</th>
+        <th>Продукти</th>
+        <th>Действия</th>
+    </tr>
+    <tr>
+        <td>${order.id}</td>
+        <td>${order.client.name}</td>
+        <td>${order.date}</td>
+        <td>${order.status}</td>
+        <td>${order.totalPrice}</td>
+        <td>${order.products}</td>
+        <td>
+            <form action="/orders/change-status/${order.id}" method="post">
+                <select name="new_status">
+                    <option value="IN_PROGRESS">В обработка</option>
+                    <option value="COMPLETED">Изпълнена</option>
+                    <option value="CANCELLED">Анулирана</option>
+                </select>
+                <button type="submit">Промяна на статуса</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

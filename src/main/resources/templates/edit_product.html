@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit product</title>
+</head>
+<body>
+<h1>Редактиране на продукт</h1>
+<form th:action="@{/products/edit/{id}}" th:method="post">
+  <input type="hidden" th:field="*{id}" />
+  <label for="name">Име на продукт:</label>
+  <input type="text" id="name" th:field="*{name}" required>
+  <br>
+  <label for="price">Цена:</label>
+  <input type="number" id="price" th:field="*{price}" required>
+  <br>
+  <label for="quantity">Количество:</label>
+  <input type="number" id="quantity" th:field="*{quantity}" required>
+  <br>
+  <label for="type">Вид продукт:</label>
+  <select id="type" th:field="*{type}" required>
+    <option value="">Изберете...</option>
+    <option value="food">Храни</option>
+    <option value="drinks">Напитки</option>
+    <option value="sanitary">Санитарни</option>
+    <option value="railing">Парапети</option>
+    <option value="others">Аксесоари, декорация, други</option>
+  </select>
+  <br>
+  <label for="color">Цвят (по желание):</label>
+  <input type="text" id="color" th:field="*{color}">
+  <br>
+  <label for="expires_in">Срок на годност (по желание):</label>
+  <input type="date" id="expires_in" th:field="*{expires_in}">
+  <br>
+  <br>
+  <button type="submit">Запази</button>
+</form>
+</body>
+</html>

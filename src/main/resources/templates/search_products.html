@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search products</title>
+</head>
+<body>
+<h1>Търсене на продукти</h1>
+<form action="/products/search" method="get">
+    <label for="search_by">Търси по:</label>
+    <select id="search_by" name="search_by">
+        <option value="id">ID</option>
+        <option value="name">Име</option>
+        <option value="price">Цена</option>
+    </select>
+    <br>
+    <label for="search_term">Търсена дума/фраза:</label>
+    <input type="text" id="search_term" name="search_term" required>
+    <br>
+    <label for="min_price">Минимална цена (по желание):</label>
+    <input type="number" id="min_price" name="min_price">
+    <br>
+    <label for="max_price">Максимална цена (по желание):</label>
+    <input type="number" id="max_price" name="max_price">
+    <br>
+    <br>
+    <button type="submit">Търси</button>
+</form>
+</body>
+</html>

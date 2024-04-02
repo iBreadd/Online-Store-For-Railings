@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of Products</title>
+</head>
+<body>
+<h1>Списък с продукти</h1>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Име</th>
+    <th>Цена</th>
+    <th>Количество</th>
+    <th>Вид</th>
+    <th>Цвят</th>
+    <th>Срок на годност</th>
+  </tr>
+  <tr>
+    <td>${product.id}</td>
+    <td>${product.name}</td>
+    <td>${product.price}</td>
+    <td>${product.quantity}</td>
+    <td>${product.type}</td>
+    <td>${product.color}</td>
+    <td>${product.expires_in}</td>
+  </tr>
+</table>
+<br>
+<form action="/products/sort" method="get">
+  <label for="sort_by">Сортиране по:</label>
+  <select id="sort_by" name="sort_by">
+    <option value="id">ID</option>
+    <option value="name">Име</option>
+    <option value="price">Цена</option>
+    <option value="quantity">Количество</option>
+  </select>
+  <button type="submit">Сортиране</button>
+</form>
+</body>
+</html>

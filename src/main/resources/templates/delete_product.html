@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete product confirm</title>
+</head>
+<body>
+<h1>Потвърждение за изтриване на продукт</h1>
+<p>Сигурни ли сте, че искате да изтриете продукт с ID ${id}?</p>
+<form th:action="@{/products/delete/{id}}" th:method="post">
+  <input type="hidden" th:field="*{id}" />
+  <button type="submit">Изтриване</button>
+  <a href="/products">Отказ</a>
+</form>
+</body>
+</html>

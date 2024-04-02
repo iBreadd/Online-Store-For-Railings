@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of employees</title>
+</head>
+<body>
+<h1>Списък със служители</h1>
+<table border="1">
+  <tr>
+    <th>ID</th>
+    <th>Име</th>
+    <th>Длъжност</th>
+    <th>Заплата</th>
+    <th>Дата на наемане</th>
+    <th>Отдел</th>
+  </tr>
+  <tr>
+    <td>${employee.id}</td>
+    <td>${employee.name}</td>
+    <td>${employee.position}</td>
+    <td>${employee.salary}</td>
+    <td>${employee.hireDate}</td>
+    <td>${employee.department}</td>
+  </tr>
+</table>
+<br>
+<form action="/employees/sort" method="get">
+  <label for="sort_by">Сортиране по:</label>
+  <select id="sort_by" name="sort_by">
+    <option value="id">ID</option>
+    <option value="name">Име</option>
+    <option value="position">Длъжност</option>
+    <option value="salary">Заплата</option>
+    <option value="hireDate">Дата на наемане</option>
+    <option value="department">Отдел</option>
+  </select>
+  <button type="submit">Сортиране</button>
+</form>
+</body>
+</html>
