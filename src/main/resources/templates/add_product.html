@@ -7,9 +7,7 @@
 <body>
 <h1>Добавяне на продукт</h1>
 <form th:action="@{/products/add}" th:method="post">
-    <label for="product_id">ID на продукт:</label>
-    <input type="number" id="product_id" name="product_id" required>
-    <br>
+
     <label for="name">Име на продукт:</label>
     <input type="text" id="name" name="name" required>
     <br>
@@ -19,15 +17,16 @@
     <label for="quantity">Количество:</label>
     <input type="number" id="quantity" name="quantity" required>
     <br>
-    <label for="type">Вид продукт:</label>
-    <select id="type" name="type" required>
-        <option value="">Изберете...</option>
-        <option value="food">Храни</option>
-        <option value="drinks">Напитки</option>
-        <option value="sanitary">Санитарни</option>
-        <option value="railing">Парапети</option>
-        <option value="others">Аксесоари, декорация, други</option>
+
+
+    <label for="productCategory">Вид продукт:</label>
+    <select id="productCategory" name="productCategory" th:field="*{productCategory}" required>
+
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category}">Изберете категория</option>
+
     </select>
+
+
     <br>
     <label for="color">Цвят (по желание):</label>
     <input type="text" id="color" name="color">

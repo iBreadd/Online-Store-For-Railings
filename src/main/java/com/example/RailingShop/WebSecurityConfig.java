@@ -23,8 +23,7 @@ public class WebSecurityConfig {
         return new UserDetailsServiceImpl();
     }
 
-//    @Bean
-//    public UserDetailsService employeeDetailsService(){return new EmployeeDetailsServiceImpl();}
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -37,7 +36,8 @@ public class WebSecurityConfig {
 
                 .requestMatchers("/registration","/register/employee",
                         "/login/user", "/login/employee","/employee/menu",
-                        "/products/**","/products/add","/").permitAll()
+                        "/products/**","/products/add","/",
+                        "/products/delete/**").permitAll()
                         .requestMatchers("/user-details").authenticated()
                         .requestMatchers("/menu").permitAll()
 

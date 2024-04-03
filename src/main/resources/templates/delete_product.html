@@ -6,9 +6,9 @@
 </head>
 <body>
 <h1>Потвърждение за изтриване на продукт</h1>
-<p>Сигурни ли сте, че искате да изтриете продукт с ID ${id}?</p>
-<form th:action="@{/products/delete/{id}}" th:method="post">
-  <input type="hidden" th:field="*{id}" />
+<p>Сигурни ли сте, че искате да изтриете продукт с ID <span th:text="${id}"></span>?</p>
+<form th:action="@{/products/delete/{id}(id=${id})}" th:method="delete">
+  <input type="hidden"/>
   <button type="submit">Изтриване</button>
   <a href="/products">Отказ</a>
 </form>

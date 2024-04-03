@@ -1,19 +1,23 @@
 package com.example.RailingShop.Controller;
 
 import com.example.RailingShop.Entity.Products.Product;
+import com.example.RailingShop.Enums.ProductCategory;
+import com.example.RailingShop.Services.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
 public class ProductController {
 
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/cart/add")
     public String addProductToCart(@RequestParam Long product_id, @RequestParam Integer quantity, Model model) {
@@ -57,15 +61,23 @@ public class ProductController {
     }
 
     @GetMapping("/products/delete/{id}")
-    public String showDeleteProductConfirmation(@PathVariable Long id, Model model) {
-        model.addAttribute("id", id);
-        return "delete_product";
+    public String showDeleteProductConfirmation(@PathVariable(name="id") Long id, Model model) {
+        if (productService.hasEmployeeAuthority()) {
+            model.addAttribute("id", id);
+            return "delete_product";
+        }
+        return "access-denied";
+
     }
 
     @PostMapping("/products/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
-//        productService.deleteProductById(id);
-        return "redirect:/products";
+    public String deleteProduct(@PathVariable(name="id") Long id) {
+
+        if (productService.hasEmployeeAuthority()) {
+            productService.deleteProductbyId(id);
+            return "redirect:/products";
+        }
+        return "access-denied";
     }
 
     @GetMapping("/products/edit/{id}")
@@ -84,30 +96,38 @@ public class ProductController {
 
     @GetMapping("/products")
     public String showProducts(Model model) {
-//        List<Product> products = productService.getAllProducts();
-//        model.addAttribute("products", products);
-
-        var authentication = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
-        if (authentication!=null&&
-                authentication.stream().anyMatch(x-> x.getAuthority().equals("EMPLOYEE"))) {
+        Iterable<Product> products = productService.findAllProducts();
+        model.addAttribute("products", products);
             return "products";
-        }
-        return "access-denied";
+
     }
 
 
     @GetMapping("/products/add")
-    public String addProduct(){
+    public String showAddProduct(Model model){
 
 
         var authentication = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
         if (authentication!=null&&
                 authentication.stream().anyMatch(x-> x.getAuthority().equals("EMPLOYEE"))) {
+            model.addAttribute("product", new Product());
+            model.addAttribute("categories", Arrays.asList(ProductCategory.values()));
             return "add_product";
         }
 
         return "access-denied";
+    }
+
+    @PostMapping("/products/add")
+    public String addProduct(@Valid @ModelAttribute Product product){
+
+        try {
+            Product productE = productService.save(product);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return "redirect:/products";
     }
 }
