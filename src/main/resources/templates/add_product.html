@@ -19,11 +19,12 @@
     <br>
 
 
-    <label for="productCategory">Вид продукт:</label>
-    <select id="productCategory" name="productCategory" th:field="*{productCategory}" required>
 
-        <option th:each="category : ${categories}" th:value="${category}" th:text="${category}">Изберете категория</option>
+    <select name="category" >
+        <option value="">Изберете категория</option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category}">
 
+        </option>
     </select>
 
 

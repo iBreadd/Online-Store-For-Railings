@@ -12,12 +12,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+
+    @ModelAttribute("categories")
+    public List<ProductCategory> getCategories() {
+        return Arrays.asList(ProductCategory.values());
+    }
 
     @PostMapping("/cart/add")
     public String addProductToCart(@RequestParam Long product_id, @RequestParam Integer quantity, Model model) {
@@ -81,18 +88,25 @@ public class ProductController {
     }
 
     @GetMapping("/products/edit/{id}")
-    public String showEditProductForm(@PathVariable Long id, Model model) {
-//        Product product = productService.getProductById(id);
-//        model.addAttribute("product", product);
-        var authentication = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+    public String showEditProductForm(@PathVariable(name="id")  Long id, Model model) {
 
-        if (authentication!=null&&
-                authentication.stream().anyMatch(x-> x.getAuthority().equals("EMPLOYEE"))) {
+
+        if (productService.hasEmployeeAuthority()) {
+            Product product = productService.getProductById(id).orElseThrow();
+            model.addAttribute("product", product);
             return "edit_product";
         }
         return "access-denied";
 
     }
+
+    @PostMapping("/products/edit/{id}")
+    public String updateProduct(@ModelAttribute Product product, Model model) {
+        productService.update(product);
+        model.addAttribute("product", product);
+        return "products";
+    }
+
 
     @GetMapping("/products")
     public String showProducts(Model model) {
@@ -106,13 +120,11 @@ public class ProductController {
     @GetMapping("/products/add")
     public String showAddProduct(Model model){
 
+        if (productService.hasEmployeeAuthority()) {
+            Product product = new Product();
+            model.addAttribute("product", product);
+            model.addAttribute("categories", getCategories());
 
-        var authentication = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-
-        if (authentication!=null&&
-                authentication.stream().anyMatch(x-> x.getAuthority().equals("EMPLOYEE"))) {
-            model.addAttribute("product", new Product());
-            model.addAttribute("categories", Arrays.asList(ProductCategory.values()));
             return "add_product";
         }
 

@@ -6,12 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
 
+    public void update(Product product){
+        Product existingProduct = productRepository.findById(product.getId()).orElseThrow();
+
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setQuantity(product.getQuantity());
+        existingProduct.setColor(product.getColor());
+        existingProduct.setExpires_in(product.getExpires_in());
+
+        productRepository.save(existingProduct);
+    }
+    public Optional<Product> getProductById(Long id){
+        return productRepository.findById(id);
+    }
     public void deleteProductbyId(Long id){
         productRepository.deleteById(id);
     }
