@@ -21,12 +21,25 @@
     <td th:text="${product.name}"></td>
     <td th:text="${product.price}"></td>
     <td th:text="${product.quantity}"></td>
-<!--    <td th:text="${product.type}"></td>-->
+    <td th:text="${product.categoryType}"></td>
     <td th:text="${product.color}"></td>
     <td th:text="${product.expires_in}"></td>
+    <br>
+    <td>
+
+      <a th:href="@{/products/edit/{id}(id=${product.id})}" >Промяна на продукт</a>
+      <a th:href="@{/products/buy/{id}(id=${product.id})}" >Купуване на продукт</a>
+      <a th:href="@{/products/delete/{id}(id=${product.id})}" >Изтриване на продукт</a>
+
+
+    </td>
+
   </tr>
 </table>
 <br>
+<a href="/products/add">Добавяне на продукт</a>
+<br>
+
 <form action="/products/sort" method="get">
   <label for="sort_by">Сортиране по:</label>
   <select id="sort_by" name="sort_by">

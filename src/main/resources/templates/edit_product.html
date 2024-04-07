@@ -17,7 +17,7 @@
   <label for="quantity">Количество:</label>
   <input type="number" id="quantity" th:field="*{quantity}" required>
   <br>
-  <select name="category" >
+  <select name="categoryType" th:field="*{categoryType}" >
     <option value="">Изберете категория</option>
     <option th:each="category : ${categories}" th:value="${category}" th:text="${category}">
 

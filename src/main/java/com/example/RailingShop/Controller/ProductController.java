@@ -1,11 +1,18 @@
 package com.example.RailingShop.Controller;
 
 import com.example.RailingShop.Entity.Products.Product;
+import com.example.RailingShop.Entity.User.User;
 import com.example.RailingShop.Enums.ProductCategory;
+import com.example.RailingShop.MyUserDetails;
+import com.example.RailingShop.Repository.UserRepository;
 import com.example.RailingShop.Services.ProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +26,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @ModelAttribute("categories")
@@ -100,11 +110,39 @@ public class ProductController {
 
     }
 
+    @GetMapping("/products/buy/{id}")
+    public String showBuyProductForm(@PathVariable(name="id")  Long id, Model model){
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user1 = authentication.getPrincipal();
+        var userdetails = (MyUserDetails) user1;
+
+        var currentUser = userRepository.getUserByUsername(userdetails.getUsername());
+
+        if (productService.buyAuthority()) {
+            Product product = productService.getProductById(id).orElseThrow();
+            model.addAttribute("product", product);
+            model.addAttribute("user", currentUser);
+            return "buy_product";
+        }
+        return "redirect:/products";
+
+    }
+
+    @PostMapping("/products/buy/{id}")
+    public String buyProductPost(@ModelAttribute  Product product, @ModelAttribute User user,
+                                 @RequestParam Integer quantity, HttpServletRequest request){
+        String name = request.getParameter("name");
+        Integer quantityNew = Integer.parseInt(request.getParameter("quantityNew"));
+          productService.buyProduct(product, user, quantityNew);
+        return "redirect:/products";
+    }
+
     @PostMapping("/products/edit/{id}")
     public String updateProduct(@ModelAttribute Product product, Model model) {
         productService.update(product);
-        model.addAttribute("product", product);
-        return "products";
+//        model.addAttribute("product", product);
+        return "redirect:/products";
     }
 
 
