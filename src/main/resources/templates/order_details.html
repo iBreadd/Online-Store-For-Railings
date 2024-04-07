@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Order details</title>
 </head>
 <body>
-<h1>Детайли за поръчка ${order.id}</h1>
-<p>Клиент: ${order.client.name}</p>
-<p>Дата: ${order.date}</p>
-<p>Статус: ${order.status}</p>
-<p>Цена: ${order.totalPrice}</p>
-<h2>Продукти:</h2>
-<ul>
-    <li>
-        ${product.name} - ${product.quantity} бр. - ${product.price} лв.
-    </li>
-</ul>
+<h1>Детайли за поръчка: <span th:text="${order.id}"></span> </h1>
+<p>Клиент: <span th:text="${order.user.id}"></span> </p>
+<p>Цена: <span th:text="${order.totalPrice}"></span> </p>
+
 </body>
 </html>

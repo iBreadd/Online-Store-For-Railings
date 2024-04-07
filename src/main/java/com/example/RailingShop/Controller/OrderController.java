@@ -1,6 +1,8 @@
 package com.example.RailingShop.Controller;
 
 import com.example.RailingShop.Entity.Order;
+import com.example.RailingShop.Services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/orders")
     public String showOrders(Model model) {
@@ -35,8 +41,12 @@ public class OrderController {
 
     @GetMapping("/orders/{id}")
     public String showOrderDetails(@PathVariable Long id, Model model) {
-//        Order order = orderService.getOrderById(id);
-//        model.addAttribute("order", order);
-        return "order_details";
+        Optional<Order> order = orderService.getOrderById(id);
+        if (order.isPresent()) {
+            model.addAttribute("order", order.get());
+            return "order_details";
+        }
+        return "redirect:/products";
+
     }
 }

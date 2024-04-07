@@ -9,6 +9,7 @@ import com.example.RailingShop.Services.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class ProductController {
@@ -76,6 +75,114 @@ public class ProductController {
 //        model.addAttribute("products", products);
         return "search_results";
     }
+    @GetMapping("/products/sort")
+    public String sortProducts(@RequestParam String sortBy, Model model){
+
+        if (productService.buyAuthority()) {
+            Iterable<Product> products = productService.findAllProducts();
+
+            List<Product> productList;
+            if (products instanceof List) {
+                productList = (List<Product>) products;
+            } else {
+                productList = new ArrayList<>();
+                for (Product product : products) {
+                    productList.add(product);
+                }
+            }
+
+            switch (sortBy){
+                case "id":
+                    Collections.sort(productList, Comparator.comparing(Product::getId));
+                    break;
+                case "name":
+                    Collections.sort(productList, Comparator.comparing(Product::getName));
+                    break;
+                case "price":
+                    Collections.sort(productList, Comparator.comparing(Product::getPrice));
+                    break;
+                case "quantity":
+                    Collections.sort(productList, Comparator.comparing(Product::getQuantity));
+                    break;
+            }
+
+            model.addAttribute("sortedProducts", productList);
+
+            return "list_of_products";
+
+        }
+
+        return "redirect:/products";
+
+
+    }
+
+    @GetMapping("/products/sort-expires")
+    public String sortProductsByExpires(Model model) {
+        Iterable<Product> products = productService.findAllProducts();
+        List<Product> productList = getProductList(products);
+        productList.sort(Comparator.comparing(Product::getExpires_in));
+
+        model.addAttribute("products", productList);
+
+        return "search_results";
+    }
+    @GetMapping("/products/sort-quantity")
+    public String sortProductsByQuantity(Model model) {
+        Iterable<Product> products = productService.findAllProducts();
+        List<Product> productList = getProductList(products);
+        productList.sort(Comparator.comparing(Product::getQuantity));
+
+        model.addAttribute("products", productList);
+
+        return "search_results";
+    }
+
+    @GetMapping("/products/sort-price")
+    public String sortProductsByPrice(Model model) {
+        Iterable<Product> products = productService.findAllProducts();
+        List<Product> productList = getProductList(products);
+        productList.sort(Comparator.comparing(Product::getPrice));
+
+        model.addAttribute("products", productList);
+
+        return "search_results";
+    }
+
+    @GetMapping("/products/sort-name")
+    public String sortProductsByName(Model model) {
+        Iterable<Product> products = productService.findAllProducts();
+        List<Product> productList = getProductList(products);
+        productList.sort(Comparator.comparing(Product::getName));
+
+        model.addAttribute("products", productList);
+
+        return "search_results";
+    }
+
+    @GetMapping("/products/sort-id")
+    public String sortProductsById(Model model) {
+        Iterable<Product> products = productService.findAllProducts();
+        List<Product> productList = getProductList(products);
+        productList.sort(Comparator.comparing(Product::getId));
+
+        model.addAttribute("products", productList);
+
+        return "search_results";
+    }
+
+    private static List<Product> getProductList(Iterable<Product> products) {
+        List<Product> productList;
+        if (products instanceof List) {
+            productList = (List<Product>) products;
+        } else {
+            productList = new ArrayList<>();
+            for (Product product : products) {
+                productList.add(product);
+            }
+        }
+        return productList;
+    }
 
     @GetMapping("/products/delete/{id}")
     public String showDeleteProductConfirmation(@PathVariable(name="id") Long id, Model model) {
@@ -117,7 +224,7 @@ public class ProductController {
         var user1 = authentication.getPrincipal();
         var userdetails = (MyUserDetails) user1;
 
-        var currentUser = userRepository.getUserByUsername(userdetails.getUsername());
+        User currentUser = userRepository.getUserByUsername(userdetails.getUsername());
 
         if (productService.buyAuthority()) {
             Product product = productService.getProductById(id).orElseThrow();
@@ -132,7 +239,7 @@ public class ProductController {
     @PostMapping("/products/buy/{id}")
     public String buyProductPost(@ModelAttribute  Product product, @ModelAttribute User user,
                                  @RequestParam Integer quantity, HttpServletRequest request){
-        String name = request.getParameter("name");
+
         Integer quantityNew = Integer.parseInt(request.getParameter("quantityNew"));
           productService.buyProduct(product, user, quantityNew);
         return "redirect:/products";

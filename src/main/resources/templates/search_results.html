@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Searcg results</title>
+    <title>Search results</title>
 </head>
 <body>
 <h1>Списък с продукти</h1>
@@ -16,14 +16,16 @@
         <th>Цвят</th>
         <th>Срок на годност</th>
     </tr>
-    <tr>
-        <td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.price}</td>
-        <td>${product.quantity}</td>
-        <td>${product.type}</td>
-        <td>${product.color}</td>
-        <td>${product.expires_in}</td>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.quantity}"></td>
+        <td th:text="${product.categoryType}"></td>
+        <td th:text="${product.color}"></td>
+        <td th:text="${product.expires_in}"></td>
+
+
     </tr>
 </table>
 </body>

@@ -26,12 +26,9 @@
     <td th:text="${product.expires_in}"></td>
     <br>
     <td>
-
       <a th:href="@{/products/edit/{id}(id=${product.id})}" >Промяна на продукт</a>
       <a th:href="@{/products/buy/{id}(id=${product.id})}" >Купуване на продукт</a>
       <a th:href="@{/products/delete/{id}(id=${product.id})}" >Изтриване на продукт</a>
-
-
     </td>
 
   </tr>
@@ -40,15 +37,11 @@
 <a href="/products/add">Добавяне на продукт</a>
 <br>
 
-<form action="/products/sort" method="get">
-  <label for="sort_by">Сортиране по:</label>
-  <select id="sort_by" name="sort_by">
-    <option value="id">ID</option>
-    <option value="name">Име</option>
-    <option value="price">Цена</option>
-    <option value="quantity">Количество</option>
-  </select>
-  <button type="submit">Сортиране</button>
-</form>
+<h1>Сортиране по:</h1>
+<a href="/products/sort-id">ID</a>
+<a href="/products/sort-name">Име</a>
+<a href="/products/sort-price">Цена</a>
+<a href="/products/sort-quantity">Количество</a>
+<a href="/products/sort-expires">Срок на годност</a>
 </body>
 </html>

@@ -39,7 +39,7 @@ public class WebSecurityConfig {
                         "/products/**","/products/add","/",
                         "/products/delete/**").permitAll()
                         .requestMatchers("/user-details").authenticated()
-                        .requestMatchers("/menu").permitAll()
+                        .requestMatchers("/menu", "/orders/**").permitAll()
 
         ).formLogin((form) -> form
                 .loginPage("/login").permitAll()

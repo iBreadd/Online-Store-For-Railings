@@ -4,12 +4,15 @@ import com.example.RailingShop.Entity.Order;
 import com.example.RailingShop.Entity.Products.Product;
 import com.example.RailingShop.Entity.User.Employee;
 import com.example.RailingShop.Entity.User.User;
+import com.example.RailingShop.MyUserDetails;
 import com.example.RailingShop.Repository.OrderRepository;
 import com.example.RailingShop.Repository.ProductRepository;
+import com.example.RailingShop.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +23,16 @@ public class ProductService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public void buyProduct(Product product, User user, Integer quantityNew){
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user1 = authentication.getPrincipal();
+        var userdetails = (MyUserDetails) user1;
+
+        User currentUser = userRepository.getUserByUsername(userdetails.getUsername());
         if (product.getPrice() <0 || product.getQuantity()<1) {
             throw new RuntimeException();
         }
@@ -28,20 +40,17 @@ public class ProductService {
         if (product.getQuantity()<quantityNew) {
             throw new RuntimeException();
         }
-        Product product1 = new Product();
-//        product1.setName(product.getName());
+
         product.setQuantity(product.getQuantity()-quantityNew);
-//        product1.setPrice(product.getPrice());
-//        product1.setColor(product.getColor());
-//        product1.setCategoryType(product.getCategoryType());
-//        product1.setExpires_in(product.getExpires_in());
+
         productRepository.save(product);
 
         Order order = new Order();
         order.setTotalPrice(product.getPrice()*quantityNew);
+        order.setUser(currentUser);
 
         orderRepository.save(order);
-//        order.setEmployee(new Employee("ivan", "ivanov", 1500.00));
+
 
     }
 
@@ -68,6 +77,9 @@ public class ProductService {
 
         return productRepository.findAll();
     }
+
+
+
     public Product save(Product product) throws Exception {
         if (hasEmployeeAuthority()) {
 
