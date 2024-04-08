@@ -7,22 +7,49 @@
 <body>
 <h1>Търсене на продукти</h1>
 <form action="/products/search" method="get">
-    <label for="search_by">Търсене по:</label>
-    <select id="search_by" name="search_by">
-        <option value="category">Категория</option>
-        <option value="name">Име</option>
+    <label for="id">ID:</label>
+    <input type="number" id="id" name="id">
+
+    <label for="name">Име:</label>
+    <input type="text" id="name" name="name">
+
+    <label for="minPrice">Цена (мин):</label>
+    <input type="number" id="minPrice" name="minPrice">
+
+    <label for="maxPrice">Цена (макс):</label>
+    <input type="number" id="maxPrice" name="maxPrice">
+
+    <label for="minQuantity">Наличност (мин):</label>
+    <input type="number" id="minQuantity" name="minQuantity">
+
+    <select name="searchType">
+        <option value="exact">Точно съвпадение</option>
+        <option value="partial">Частично съвпадение</option>
+        <option value="range">Диапазон</option>
     </select>
-    <input type="text" id="search_term" name="search_term">
+
     <button type="submit">Търсене</button>
 </form>
 <br>
-<div id="results">
-    <div th:each="product : ${products}">
-        <h2>[[${product.name}]]</h2>
-        <p>Цена: [[${product.price}]]</p>
-        <p>Категория: [[${product.category}]]</p>
-        <img th:src="${product.image}" width="100">
-    </div>
-</div>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Име</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Вид</th>
+        <th>Цвят</th>
+        <th>Срок на годност</th>
+    </tr>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.quantity}"></td>
+        <td th:text="${product.categoryType}"></td>
+        <td th:text="${product.color}"></td>
+        <td th:text="${product.expires_in}"></td>
+    </tr>
+</table>
 </body>
 </html>

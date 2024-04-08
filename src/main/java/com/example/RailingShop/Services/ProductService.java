@@ -8,6 +8,10 @@ import com.example.RailingShop.MyUserDetails;
 import com.example.RailingShop.Repository.OrderRepository;
 import com.example.RailingShop.Repository.ProductRepository;
 import com.example.RailingShop.Repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ public class ProductService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EntityManager entityManager;
 
     public void buyProduct(Product product, User user, Integer quantityNew){
 
@@ -79,6 +85,30 @@ public class ProductService {
     }
 
 
+    public List<Product> findProductsByCriteria(Long id, String name, Double minPrice, Double maxPrice, Integer minQuantity) {
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Product> query = builder.createQuery(Product.class);
+        Root<Product> root = query.from(Product.class);
+
+        if (id != null) {
+            query.where(builder.equal(root.get("id"), id));
+        }
+
+        if (name != null && !name.isEmpty()) {
+            query.where(builder.like(root.get("name"), "%" + name + "%"));
+        }
+
+        if (minPrice != null && maxPrice != null) {
+            query.where(builder.between(root.get("price"), minPrice, maxPrice));
+        }
+
+        if (minQuantity != null) {
+            query.where(builder.greaterThanOrEqualTo(root.get("quantity"), minQuantity));
+        }
+
+        return entityManager.createQuery(query).getResultList();
+    }
 
     public Product save(Product product) throws Exception {
         if (hasEmployeeAuthority()) {

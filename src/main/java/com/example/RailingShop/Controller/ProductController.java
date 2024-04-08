@@ -66,14 +66,18 @@ public class ProductController {
 
 
     @GetMapping("/products/search")
-    public String searchProducts(@RequestParam String searchBy,
-                                 @RequestParam String searchTerm,
+    public String searchProducts(Model model,
+                                 @RequestParam(required = false) Long id,
+                                 @RequestParam(required = false) String name,
                                  @RequestParam(required = false) Double minPrice,
                                  @RequestParam(required = false) Double maxPrice,
-                                 Model model) {
-//        List<Product> products = productService.searchProducts(searchBy, searchTerm, minPrice, maxPrice);
-//        model.addAttribute("products", products);
-        return "search_results";
+                                 @RequestParam(required = false) Integer minQuantity) {
+
+        List<Product> products = productService.findProductsByCriteria(id, name, minPrice, maxPrice, minQuantity);
+
+        model.addAttribute("products", products);
+
+        return "search";
     }
     @GetMapping("/products/sort")
     public String sortProducts(@RequestParam String sortBy, Model model){
