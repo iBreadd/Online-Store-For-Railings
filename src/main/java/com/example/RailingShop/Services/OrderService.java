@@ -1,10 +1,13 @@
 package com.example.RailingShop.Services;
 
 import com.example.RailingShop.Entity.Order;
+import com.example.RailingShop.Repository.OrderProductRepository;
 import com.example.RailingShop.Repository.OrderRepository;
+import com.example.RailingShop.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -17,7 +20,7 @@ public class OrderService {
     @Autowired
     private OrderProductRepository orderProductRepository;
 
-    public List<Order>getAllOrders(){
+    public List<Order> getAllOrders(){
         return (List<Order>) orderRepository.findAll();
     }
     public Optional<Order> getOrderById(Long id) {

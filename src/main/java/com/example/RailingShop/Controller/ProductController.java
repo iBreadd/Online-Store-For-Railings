@@ -213,7 +213,7 @@ public class ProductController {
 
 
         if (productService.hasEmployeeAuthority()) {
-            Product product = productService.getProductById(id).orElseThrow();
+            Product product = productService.getProductById(id);
             model.addAttribute("product", product);
             return "edit_product";
         }
@@ -231,7 +231,7 @@ public class ProductController {
         User currentUser = userRepository.getUserByUsername(userdetails.getUsername());
 
         if (productService.buyAuthority()) {
-            Product product = productService.getProductById(id).orElseThrow();
+            Product product = productService.getProductById(id);
             model.addAttribute("product", product);
             model.addAttribute("user", currentUser);
             return "buy_product";

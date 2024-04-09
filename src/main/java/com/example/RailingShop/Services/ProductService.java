@@ -2,8 +2,8 @@ package com.example.RailingShop.Services;
 
 import com.example.RailingShop.Entity.Order;
 import com.example.RailingShop.Entity.Products.Product;
-import com.example.RailingShop.Entity.User.Employee;
 import com.example.RailingShop.Entity.User.User;
+import com.example.RailingShop.Exceptions.ResourceNotFoundException;
 import com.example.RailingShop.MyUserDetails;
 import com.example.RailingShop.Repository.OrderRepository;
 import com.example.RailingShop.Repository.ProductRepository;
@@ -16,8 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -71,9 +72,9 @@ public class ProductService {
 
         productRepository.save(existingProduct);
     }
-    public Optional<Product> getProductById(Long id){
-        return productRepository.findById(id);
-    }
+//    public Optional<Product> getProductById(Long id){
+//        return productRepository.findById(id);
+//    }
     public void deleteProductbyId(Long id){
         productRepository.deleteById(id);
     }
@@ -133,7 +134,7 @@ public class ProductService {
     public List<Product>getSortedProducts(String sortBy, String sortDirection){
         List<Product> products= (List<Product>) productRepository.findAll();
 
-        Comparator<Product>comparator = switch (sortBy){
+        Comparator<Product> comparator = switch (sortBy){
             case "name"-> Comparator.comparing(Product::getName);
             case "price"-> Comparator.comparing(Product::getPrice);
             case "expireIn"-> Comparator.comparing(Product::getExpires_in);
@@ -166,17 +167,18 @@ public class ProductService {
 
     public List<Product>searchProducts(Long id, String name, int quantity, BigDecimal priceMin, BigDecimal priceMax){
         if (priceMin!=null){
-            priceMin=priceMin.setScale(2, RoundingMode.HALF_UP);
+            priceMin=priceMin.setScale(2);
         }
         if (priceMax!=null){
-            priceMax=priceMax.setScale(2, RoundingMode.HALF_UP);
+            priceMax=priceMax.setScale(2);
         }
-        return productRepository.searchProducts(id,name,quantity,priceMin,priceMax);
+//        return productRepository.searchProducts(id,name,quantity,priceMin,priceMax);
+        return null;
     }
-
-    public void save(Product product){
-        productRepository.save(product);
-    }
+//
+//    public void save(Product product){
+//        productRepository.save(product);
+//    }
 
 
 }
