@@ -7,10 +7,16 @@ package com.example.RailingShop.Enums;
 Аксесоари, декорация, други (others)
 */
 public enum ProductCategory {
-    FOOD,
-    DRINKS,
-    SANITARY,
-    RAILING,
-    OTHERS
+    FOOD("food"),DRINKS("drinks"),SANITARY("sanitary"),RAILINGS("railings"),OTHERS("others");
+
+    public String category;
+
+    ProductCategory(String category){
+        this.category=category;
+    }
+
+    public String getValue(){
+        return this.category;
+    }
 
 }
