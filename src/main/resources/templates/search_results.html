@@ -24,9 +24,10 @@
         <td th:text="${product.categoryType}"></td>
         <td th:text="${product.color}"></td>
         <td th:text="${product.expires_in}"></td>
-
-
     </tr>
 </table>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Изход</button>
+</form>
 </body>
 </html>

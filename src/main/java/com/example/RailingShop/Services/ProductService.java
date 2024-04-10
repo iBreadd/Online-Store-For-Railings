@@ -125,6 +125,11 @@ public class ProductService {
         return authentication != null && authentication.getAuthorities().stream()
                 .anyMatch(x -> x.getAuthority().equals("EMPLOYEE"));
     }
+    public boolean hasUserAuthority() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(x -> x.getAuthority().equals("USER"));
+    }
     public boolean buyAuthority() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.getAuthorities().stream()

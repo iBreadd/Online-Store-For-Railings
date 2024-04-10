@@ -29,7 +29,9 @@
     <button type="submit">Купи</button>
   </form>
 </div>
-
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Изход</button>
+</form>
 <div th:unless="${product}">
   <p>Продуктът не е намерен.</p>
 </div>

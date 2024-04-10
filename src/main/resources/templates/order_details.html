@@ -8,6 +8,8 @@
 <h1>Детайли за поръчка: <span th:text="${order.id}"></span> </h1>
 <p>Клиент: <span th:text="${order.user.id}"></span> </p>
 <p>Цена: <span th:text="${order.totalPrice}"></span> </p>
-
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Изход</button>
+</form>
 </body>
 </html>
